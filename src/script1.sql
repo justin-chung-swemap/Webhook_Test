@@ -25,14 +25,6 @@ s_calculation AS (
    FROM
        contribution_counts
 )
-SELECT
-   module_name,
-   CASE
-       WHEN score_s = 0 THEN NULL
-       ELSE 1.0 / score_s
-   END AS risk_metric
-FROM
-   s_calculation;
 
 -- main contributor (1): has a button to expand the full list:
 -- list of top-5 contributors with >15% ownership
