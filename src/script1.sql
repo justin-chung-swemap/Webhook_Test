@@ -42,23 +42,6 @@ FROM
 -- Keep track of commits: use line chunks.
 -- Blame has [start_line - end_line]; don't worry about performance for now.
 
--- 1. Import your Logic/Schema file
--- Note: The path is relative to where you run psql from.
-\i db_schema/module_risk/script.sql
-
-BEGIN;
-
--- 2. Setup Test Data (The exact same setup as before)
-INSERT INTO repos (name, url, language) VALUES ('calc-repo', 'http://test', 'Python');
-
-INSERT INTO modules (repo_id, name, dir_path)
-VALUES ((SELECT id FROM repos WHERE name = 'calc-repo'), 'RiskModule', '/src/risk');
-
-INSERT INTO engineers (name, email) VALUES 
-    ('Math Person A', 'a@calc.test'),
-    ('Math Person B', 'b@calc.test'),
-    ('Math Person C', 'c@calc.test');
-
 -- Person A (D=1, R=1)
 INSERT INTO module_contributions (engineer_id, module_id, interaction_type)
 VALUES 
@@ -89,3 +72,7 @@ WHERE
     module_name = 'RiskModule';
 
 ROLLBACK;
+
+DROP TRIGGER IF EXISTS trigger_update_blame_metrics ON commit_hunks CASCADE;
+DROP TABLE IF EXISTS engineers, repos, skills, modules, files, commits, reviews, module_contributions, file_contributions, module_skills, engineer_skills, file_dependencies, commit_hunks, file_ownership_metrics CASCADE;
+DROP TYPE IF EXISTS skill_type_enum, commit_type_enum, interaction_type_enum, dep_type_enum CASCADE;
