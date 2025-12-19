@@ -75,3 +75,14 @@ WHERE
     module_name = 'RiskModule';
 
 ROLLBACK;
+
+
+
+SELECT
+   module_name,
+   CASE
+       WHEN score_s = 0 THEN NULL
+       ELSE 1.0 / score_s
+   END AS risk_metric
+FROM
+   s_calculation;
