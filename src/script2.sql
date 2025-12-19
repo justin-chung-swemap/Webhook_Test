@@ -32,15 +32,26 @@ VALUES
 INSERT INTO module_contributions (engineer_id, module_id, interaction_type)
 VALUES 
 
--- Person A (D=1, R=1)
-INSERT INTO module_contributions (engineer_id, module_id, interaction_type)
-VALUES 
-    ((SELECT id FROM engineers WHERE email='a@calc.test'), (SELECT id FROM modules WHERE name='RiskModule'), 'DESIGNED'),
-    ((SELECT id FROM engineers WHERE email='a@calc.test'), (SELECT id FROM modules WHERE name='RiskModule'), 'REVIEWED');
-
--- Person B (D=1->Total 2, R=1->Total 2)
-INSERT INTO module_contributions (engineer_id, module_id, interaction_type)
-VALUES 
+-- These lines modified by JustinChungCYT
+s_calculation AS (
+   SELECT
+       module_name,
+       (
+           (0.50 * num_wrote) +
+           (0.25 * num_designed) +
+           (0.25 * num_reviewed)
+       ) / 5.0 AS score_s
+   FROM
+       contribution_counts
+)
+SELECT
+   module_name,
+   CASE
+       WHEN score_s = 0 THEN NULL
+       ELSE 1.0 / score_s
+   END AS risk_metric
+FROM
+   s_calculation;
 
 -- Person A (D=1, R=1)
 INSERT INTO module_contributions (engineer_id, module_id, interaction_type)
