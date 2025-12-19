@@ -78,6 +78,22 @@ ROLLBACK;
 
 
 
+CREATE OR REPLACE VIEW module_risk_metrics AS
+WITH contribution_counts AS (
+   SELECT
+       m.name AS module_name, -- We keep the name so we can filter later
+       COUNT(*) FILTER (WHERE mc.interaction_type = 'DESIGNED') AS num_designed,
+       COUNT(*) FILTER (WHERE mc.interaction_type = 'WROTE') AS num_wrote,
+       COUNT(*) FILTER (WHERE mc.interaction_type = 'REVIEWED') AS num_reviewed
+   FROM
+       modules m
+   JOIN
+       module_contributions mc ON m.id = mc.module_id
+   GROUP BY
+       m.name -- Calculate for every module found
+),
+
+
 SELECT
    module_name,
    CASE

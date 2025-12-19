@@ -8,6 +8,15 @@ VALUES
     ((SELECT id FROM engineers WHERE email='a@calc.test'), (SELECT id FROM modules WHERE name='RiskModule'), 'DESIGNED'),
     ((SELECT id FROM engineers WHERE email='a@calc.test'), (SELECT id FROM modules WHERE name='RiskModule'), 'REVIEWED');
 
+
+INSERT INTO modules (repo_id, name, dir_path)
+VALUES ((SELECT id FROM repos WHERE name = 'calc-repo'), 'RiskModule', '/src/risk');
+
+INSERT INTO engineers (name, email) VALUES 
+    ('Math Person A', 'a@calc.test'),
+    ('Math Person B', 'b@calc.test'),
+    ('Math Person C', 'c@calc.test');
+
 -- Person B (D=1->Total 2, R=1->Total 2)
 INSERT INTO module_contributions (engineer_id, module_id, interaction_type)
 VALUES 
