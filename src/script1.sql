@@ -60,6 +60,9 @@ VALUES
     ((SELECT id FROM engineers WHERE email='c@calc.test'), (SELECT id FROM modules WHERE name='RiskModule'), 'WROTE'),
     ((SELECT id FROM engineers WHERE email='c@calc.test'), (SELECT id FROM modules WHERE name='RiskModule'), 'REVIEWED');
 
+-- Person B (D=1->Total 2, R=1->Total 2)
+INSERT INTO module_contributions (engineer_id, module_id, interaction_type)
+VALUES 
 
 -- 3. Run the Test
 -- Notice how clean this part is now! We just query the View.
