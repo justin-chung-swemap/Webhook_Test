@@ -1,16 +1,20 @@
--- 1. Import your Logic/Schema file
--- Note: The path is relative to where you run psql from.
-\i db_schema/module_risk/script.sql
+CREATE TABLE line_ownership (
+    id SERIAL PRIMARY KEY,
+    file_id INTEGER REFERENCES files(id) ON DELETE CASCADE,
+    engineer_id INTEGER REFERENCES engineers(id) ON DELETE CASCADE,
+    
+    -- RANGE OPTIMIZATION: Use int4range instead of start_line/end_line
+    -- Example: [1, 100) includes 1 up to 99.
+    line_range int4range NOT NULL, 
+    
+    last_updated_commit TEXT, -- [cite: 135]
+    
+    -- Prevent overlapping ownership for the same lines in the same file
+    EXCLUDE USING gist (file_id WITH =, line_range WITH &&)
+);
 
-BEGIN;
+-- Create Indexes for performance
+CREATE INDEX idx_contributions_module_id
+ON module_contributions(module_id, interaction_type);
 
--- 2. Setup Test Data (The exact same setup as before)
-INSERT INTO repos (name, url, language) VALUES ('calc-repo', 'http://test', 'Python');
-
-INSERT INTO modules (repo_id, name, dir_path)
-VALUES ((SELECT id FROM repos WHERE name = 'calc-repo'), 'RiskModule', '/src/risk');
-
-INSERT INTO engineers (name, email) VALUES 
-    ('Math Person A', 'a@calc.test'),
-    ('Math Person B', 'b@calc.test'),
-    ('Math Person C', 'c@calc.test');
+CREATE INDEX idx_modules_name ON modules(name);
