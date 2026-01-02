@@ -1,11 +1,7 @@
--- 1. Create Custom ENUM Types first
--- These limit columns to specific string values
 CREATE TYPE skill_type_enum AS ENUM ('LANGUAGE', 'FRAMEWORK', 'TOOL', 'PLATFORM');
 CREATE TYPE commit_type_enum AS ENUM ('COMMIT', 'PR');
 CREATE TYPE interaction_type_enum AS ENUM ('DESIGNED', 'WROTE', 'REVIEWED');
 CREATE TYPE dep_type_enum AS ENUM ('INTERNAL', 'EXTERNAL');
-
--- 2. Create Independent Tables (No Foreign Keys)
 
 CREATE TABLE engineers (
     id SERIAL PRIMARY KEY,
