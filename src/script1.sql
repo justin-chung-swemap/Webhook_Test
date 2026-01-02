@@ -1,6 +1,5 @@
 -- Drop the table if it already exists to allow for rerunning the script
 DROP TABLE IF EXISTS random_people;
-
 -- Create a new table and populate it with random data
 CREATE TABLE random_people AS
 WITH first_names(name) AS (
