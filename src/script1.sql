@@ -1,20 +1,18 @@
-CREATE TABLE line_ownership (
+-- 1. Create Custom ENUM Types first
+-- These limit columns to specific string values
+CREATE TYPE skill_type_enum AS ENUM ('LANGUAGE', 'FRAMEWORK', 'TOOL', 'PLATFORM');
+CREATE TYPE commit_type_enum AS ENUM ('COMMIT', 'PR');
+CREATE TYPE interaction_type_enum AS ENUM ('DESIGNED', 'WROTE', 'REVIEWED');
+CREATE TYPE dep_type_enum AS ENUM ('INTERNAL', 'EXTERNAL');
+
+-- 2. Create Independent Tables (No Foreign Keys)
+
+CREATE TABLE engineers (
     id SERIAL PRIMARY KEY,
-    file_id INTEGER REFERENCES files(id) ON DELETE CASCADE,
-    engineer_id INTEGER REFERENCES engineers(id) ON DELETE CASCADE,
-    
-    -- RANGE OPTIMIZATION: Use int4range instead of start_line/end_line
-    -- Example: [1, 100) includes 1 up to 99.
-    line_range int4range NOT NULL, 
-    
-    last_updated_commit TEXT, -- [cite: 135]
-    
-    -- Prevent overlapping ownership for the same lines in the same file
-    EXCLUDE USING gist (file_id WITH =, line_range WITH &&)
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    team VARCHAR(100),
+    join_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_active TIMESTAMP,
+    recs JSONB
 );
-
--- Create Indexes for performance
-CREATE INDEX idx_contributions_module_id
-ON module_contributions(module_id, interaction_type);
-
-CREATE INDEX idx_modules_name ON modules(name);
