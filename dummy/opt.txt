@@ -1,6 +1,8 @@
 # This is a configuration file for ProGuard.
 # http://proguard.sourceforge.net/index.html#manual/usage.html
 
+# This is to test whether the dummy module is being added to the 'modules' table.
+
 # Optimizations: If you don't want to optimize, use the
 # proguard-android.txt configuration file instead of this one, which
 # turns off the optimization flags.  Adding optimization introduces
