@@ -9,3 +9,10 @@ public class PackBroadcastReceiverBase extends BroadcastReceiver {
   @Override
   public void onReceive(Context arg0, Intent arg1) {}
 }
+
+// -- Reviewed by JustinChung-SWEMAP
+public class PackBroadcastReceiverBase extends BroadcastReceiver {
+
+  @Override
+  public void onReceive(Context arg0, Intent arg1) {}
+}
