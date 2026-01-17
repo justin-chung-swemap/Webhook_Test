@@ -9,3 +9,12 @@ dependencies {
 android {
     namespace 'com.anysoftkeyboard.addon'
 }
+
+// -- Reviewed by JustinChung-SWEMAP
+dependencies {
+    api project(path: ':api')
+}
+
+android {
+    namespace 'com.anysoftkeyboard.addon'
+}
