@@ -15,6 +15,15 @@ dependencies {
 }
 
 
+dependencies {
+    testImplementation libs.junit
+    testImplementation(libs.robolectric) {
+        exclude group: 'com.google.auto.service', module: 'auto-service'
+    }
+    testImplementation libs.androidx.test.core
+}
+
+
 apply plugin: 'com.android.library'
 
 apply from: "${rootDir}/gradle/android_general.gradle"
